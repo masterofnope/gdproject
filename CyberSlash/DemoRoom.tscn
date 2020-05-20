@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Art/Tiles and Tile Sets/Platformer Industrial (Kenny)/platformerPack_industrial_tilesheet.png" type="Texture" id=1]
 [ext_resource path="res://src/Actors/Player.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://src/Game.gd" type="Script" id=5]
 [ext_resource path="res://DemoRoom.gd" type="Script" id=6]
 [ext_resource path="res://src/Objects/Whetstone.tscn" type="PackedScene" id=7]
+[ext_resource path="res://src/Objects/Multi_jump.tscn" type="PackedScene" id=8]
 
 [sub_resource type="TileSet" id=1]
 0/name = "platformerPack_industrial_tilesheet.png 0"
@@ -1871,6 +1872,7 @@ pause_mode = 2
 script = ExtResource( 5 )
 
 [node name="DemoRoom" type="Node2D" parent="."]
+position = Vector2( -0.58728, 1.78925 )
 script = ExtResource( 6 )
 
 [node name="TileMap" type="TileMap" parent="DemoRoom"]
@@ -1886,11 +1888,12 @@ tile_set = SubResource( 3 )
 cell_size = Vector2( 70, 70 )
 cell_custom_transform = Transform2D( 70, 0, 0, 70, 0, 0 )
 format = 1
-tile_data = PoolIntArray( -196607, 0, 0, 131071, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0 )
+tile_data = PoolIntArray( -393205, 0, 0, -393204, 0, 0, -393199, 0, 0, -327663, 0, 0, -262127, 0, 0, -196607, 0, 0, -196595, 0, 0, -196594, 0, 0, -196591, 0, 0, -131064, 0, 0, -131063, 0, 0, -131055, 0, 0, -65529, 0, 0, -65526, 0, 0, -65519, 0, 0, 6, 0, 0, 11, 0, 0, 17, 0, 0, 131071, 0, 0, 65536, 0, 0, 65537, 0, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65548, 0, 0, 65549, 0, 0, 65550, 0, 0, 65551, 0, 0, 65552, 0, 0, 65553, 0, 0 )
 
 [node name="Player" type="KinematicBody2D" parent="DemoRoom"]
 collision_mask = 30
 script = ExtResource( 2 )
+speed = Vector2( 150, 1000 )
 
 [node name="SlashAnimation" type="Timer" parent="DemoRoom/Player"]
 process_mode = 0
@@ -1929,16 +1932,22 @@ position = Vector2( 0, -35 )
 current = true
 zoom = Vector2( 0.8, 0.8 )
 
+[node name="Whetstone" parent="DemoRoom" instance=ExtResource( 7 )]
+position = Vector2( 360.155, 0.958679 )
+
 [node name="InterfaceLayer" type="CanvasLayer" parent="."]
 
 [node name="Whetstone" parent="." instance=ExtResource( 7 )]
-position = Vector2( 298, 1 )
+position = Vector2( 297.413, 2.78925 )
+
+[node name="Multi_jump" parent="." instance=ExtResource( 8 )]
+position = Vector2( 1142.71, 24.533 )
 
 [node name="Whetstone2" parent="." instance=ExtResource( 7 )]
-position = Vector2( 364, 2 )
+position = Vector2( 230.547, 3.63947 )
 
 [node name="Whetstone3" parent="." instance=ExtResource( 7 )]
-position = Vector2( 235, -1.90735e-06 )
+position = Vector2( 164.677, 3.63947 )
 
-[node name="Whetstone4" parent="." instance=ExtResource( 7 )]
-position = Vector2( 170, -2 )
+[node name="Multi_jump2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 1061.09, 20.8231 )
