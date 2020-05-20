@@ -1893,7 +1893,7 @@ tile_data = PoolIntArray( -393205, 0, 0, -393204, 0, 0, -393199, 0, 0, -327663, 
 [node name="Player" type="KinematicBody2D" parent="DemoRoom"]
 collision_mask = 30
 script = ExtResource( 2 )
-speed = Vector2( 150, 1000 )
+speed = Vector2( 250, 1000 )
 
 [node name="SlashAnimation" type="Timer" parent="DemoRoom/Player"]
 process_mode = 0
