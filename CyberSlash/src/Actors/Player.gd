@@ -13,12 +13,19 @@ onready var slash_timer = $SlashAnimation
 onready var sword = $Sprite/Sword
 
 
+onready var multijumps = 0
+onready var maxmultijumps = 0
+
+
 func _ready():
 	var camera: Camera2D = $Camera
 	if action_prefix == "p_":
 		camera.custom_viewport = $"../.."
 
 		
+func reset_jumps(doordonot):
+	if doordonot:
+		multijumps = maxmultijumps
 
 func _physics_process(_delta):
 	var direction = get_direction()
@@ -26,6 +33,8 @@ func _physics_process(_delta):
 	var is_jump_interrupted = Input.is_action_just_released("p_move_jump") and _velocity.y < 0.0
 	_velocity = calculate_move_velocity(_velocity, direction, speed, is_jump_interrupted)
 
+	reset_jumps(is_on_floor())
+	
 	var snap_vector = Vector2.DOWN * FLOOR_DETECT_DISTANCE if direction.y == 0.0 else Vector2.ZERO
 	var is_on_platform = platform_detector.is_colliding()
 	_velocity = move_and_slide_with_snap(
@@ -65,15 +74,23 @@ func calculate_move_velocity(
 	var velocity = linear_velocity
 	velocity.x = speed.x * direction.x
 	if direction.y != 0.0:
-		velocity.y = speed.y * direction.y
+		velocity.y += speed.y * direction.y
 	if is_jump_interrupted:
 		velocity.y = 0.0
 	return velocity
 
 func get_direction():
+	var yvel = 0
+	if is_on_floor() and Input.is_action_just_pressed("p_move_jump"):
+		yvel = -1
+	elif multijumps >=1 and Input.is_action_just_pressed("p_move_jump"):
+		yvel = -1
+		multijumps -= 1
+		_velocity.y = 0.0
+	else: yvel = .05
 	return Vector2(
 		Input.get_action_strength("p_move_right") - Input.get_action_strength("p_move_left"),
-		-1 if is_on_floor() and Input.is_action_just_pressed("p_move_jump") else 0
+		yvel
 	)
 
 func get_new_animation(is_shooting = false):
