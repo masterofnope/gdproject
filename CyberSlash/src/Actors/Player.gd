@@ -59,7 +59,7 @@ func _physics_process(_delta):
 	if animation != animation_player.current_animation and slash_timer.is_stopped():
 		if is_hor_slashing:
 			slash_timer.start()
-		animation_player.play(animation)
+		#animation_player.play(animation)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
@@ -97,8 +97,8 @@ func get_new_animation(is_shooting = false):
 	var animation_new = ""
 	if is_on_floor():
 		animation_new = "run" if abs(_velocity.x) > 0.1 else "idle"
-	else:
-		animation_new = "falling" if _velocity.y > 0 else "jumping"
+	#else:
+	#	animation_new = "falling" if _velocity.y > 0 else "jumping"
 	if is_shooting:
 		animation_new += "_weapon"
 	return animation_new
