@@ -10,11 +10,14 @@ var rand
 func spawn():
 	var enemies_scene = load("res://Enemies.tscn")
 	var enemy = enemies_scene.instance()
+	var basic = enemy.get_node("BasicBot")
 	var main_scene = load("res://DemoRoom.tscn")
 	var main = main_scene.instance()
-	enemy.position.x = main.get_node("TileMap").position.x + 630
-	enemy.position.y = main.get_node("TileMap").position.y + 157
-	add_child(enemy)
+	#basic.position.x = main.get_node("TileMap").position.x + 630
+	#basic.position.y = main.get_node("TileMap").position.y + 157
+	basic.position.x = 630
+	basic.position.y = 157
+	add_child(basic)
 	num_enemies += 1
 	if num_enemies < max_num_enemies:
 		timer.set_wait_time(rand.randi_range(min_spawn_time, max_spawn_time))

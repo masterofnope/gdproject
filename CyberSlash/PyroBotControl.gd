@@ -12,7 +12,7 @@ var max_x = 897
 
 onready var enemies_scene = load("Enemies.tscn")
 onready var enemy = enemies_scene.instance()
-onready var basic = enemy.get_node("BasicBot")
+onready var pyro = enemy.get_node("BasicBot")
 onready var main_scene = load("DemoRoom.tscn")
 onready var main = main_scene.instance()
 onready var player = main.get_node("Player")

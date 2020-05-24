@@ -1,8 +1,17 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=65 format=2]
 
-[ext_resource path="res://assets/SPRITES/basic_default_right.png" type="Texture" id=1]
-[ext_resource path="res://EnemyControl.gd" type="Script" id=2]
-[ext_resource path="res://assets/SPRITES/basic_run_right.png" type="Texture" id=3]
+[ext_resource path="res://Art/enemies/basic/basic_idle.png" type="Texture" id=1]
+[ext_resource path="res://BasicBotControl.gd" type="Script" id=2]
+[ext_resource path="res://Art/enemies/basic/basic_run.png" type="Texture" id=3]
+[ext_resource path="res://Art/enemies/rocket/rocket_run.png" type="Texture" id=4]
+[ext_resource path="res://Art/enemies/rocket/rocket_idle.png" type="Texture" id=5]
+[ext_resource path="res://Art/enemies/pyro/pyro_idle.png" type="Texture" id=6]
+[ext_resource path="res://Art/enemies/pyro/pyro_run.png" type="Texture" id=7]
+[ext_resource path="res://Art/enemies/constructor/constructor_idle.png" type="Texture" id=8]
+[ext_resource path="res://Art/enemies/constructor/constructor_run.png" type="Texture" id=9]
+[ext_resource path="res://PyroBotControl.gd" type="Script" id=10]
+[ext_resource path="res://RocketBotControl.gd" type="Script" id=11]
+[ext_resource path="res://ConstrBotControl.gd" type="Script" id=12]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -73,7 +82,226 @@ animations = [ {
 }, {
 "frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
 "loop": true,
-"name": "walk",
+"name": "run",
+"speed": 12.0
+} ]
+
+[sub_resource type="AtlasTexture" id=14]
+flags = 4
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 16, 23 )
+
+[sub_resource type="AtlasTexture" id=15]
+flags = 4
+atlas = ExtResource( 6 )
+region = Rect2( 16, 0, 16, 23 )
+
+[sub_resource type="AtlasTexture" id=16]
+flags = 4
+atlas = ExtResource( 6 )
+region = Rect2( 32, 0, 16, 23 )
+
+[sub_resource type="AtlasTexture" id=17]
+flags = 4
+atlas = ExtResource( 6 )
+region = Rect2( 48, 0, 16, 23 )
+
+[sub_resource type="AtlasTexture" id=18]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 0, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=19]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 16, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=20]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 32, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=21]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 48, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=22]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 64, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=23]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 80, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=24]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 96, 0, 16, 24 )
+
+[sub_resource type="AtlasTexture" id=25]
+flags = 4
+atlas = ExtResource( 7 )
+region = Rect2( 112, 0, 16, 24 )
+
+[sub_resource type="SpriteFrames" id=26]
+animations = [ {
+"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ) ],
+"loop": true,
+"name": "idle",
+"speed": 4.0
+}, {
+"frames": [ SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ) ],
+"loop": true,
+"name": "run",
+"speed": 12.0
+} ]
+
+[sub_resource type="AtlasTexture" id=27]
+flags = 4
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 16, 26 )
+
+[sub_resource type="AtlasTexture" id=28]
+flags = 4
+atlas = ExtResource( 5 )
+region = Rect2( 16, 0, 16, 26 )
+
+[sub_resource type="AtlasTexture" id=29]
+flags = 4
+atlas = ExtResource( 5 )
+region = Rect2( 32, 0, 16, 26 )
+
+[sub_resource type="AtlasTexture" id=30]
+flags = 4
+atlas = ExtResource( 5 )
+region = Rect2( 48, 0, 16, 26 )
+
+[sub_resource type="AtlasTexture" id=31]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 16, 27 )
+
+[sub_resource type="AtlasTexture" id=32]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 16, 0, 16, 27 )
+
+[sub_resource type="AtlasTexture" id=33]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 32, 0, 16, 27 )
+
+[sub_resource type="AtlasTexture" id=34]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 48, 0, 16, 27 )
+
+[sub_resource type="AtlasTexture" id=35]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 64, 0, 16, 27 )
+
+[sub_resource type="AtlasTexture" id=36]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 80, 0, 16, 27 )
+
+[sub_resource type="AtlasTexture" id=37]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 96, 0, 16, 27 )
+
+[sub_resource type="AtlasTexture" id=38]
+flags = 4
+atlas = ExtResource( 4 )
+region = Rect2( 112, 0, 16, 27 )
+
+[sub_resource type="SpriteFrames" id=39]
+animations = [ {
+"frames": [ SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ) ],
+"loop": true,
+"name": "idle",
+"speed": 4.0
+}, {
+"frames": [ SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ) ],
+"loop": true,
+"name": "run",
+"speed": 12.0
+} ]
+
+[sub_resource type="AtlasTexture" id=40]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=41]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 16, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=42]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 32, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=43]
+flags = 4
+atlas = ExtResource( 8 )
+region = Rect2( 48, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=44]
+flags = 4
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=45]
+flags = 4
+atlas = ExtResource( 9 )
+region = Rect2( 16, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=46]
+flags = 4
+atlas = ExtResource( 9 )
+region = Rect2( 32, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=47]
+flags = 4
+atlas = ExtResource( 9 )
+region = Rect2( 48, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=48]
+flags = 4
+atlas = ExtResource( 9 )
+region = Rect2( 64, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=49]
+flags = 4
+atlas = ExtResource( 9 )
+region = Rect2( 80, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=50]
+flags = 4
+atlas = ExtResource( 9 )
+region = Rect2( 96, 0, 16, 31 )
+
+[sub_resource type="AtlasTexture" id=51]
+flags = 4
+atlas = ExtResource( 9 )
+region = Rect2( 112, 0, 16, 31 )
+
+[sub_resource type="SpriteFrames" id=52]
+animations = [ {
+"frames": [ SubResource( 40 ), SubResource( 41 ), SubResource( 42 ), SubResource( 43 ) ],
+"loop": true,
+"name": "idle",
+"speed": 4.0
+}, {
+"frames": [ SubResource( 44 ), SubResource( 45 ), SubResource( 46 ), SubResource( 47 ), SubResource( 48 ), SubResource( 49 ), SubResource( 50 ), SubResource( 51 ) ],
+"loop": true,
+"name": "run",
 "speed": 12.0
 } ]
 
@@ -85,8 +313,48 @@ script = ExtResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BasicBot"]
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="BasicBot"]
+position = Vector2( 0.19371, 0 )
 scale = Vector2( 1.5, 1.5 )
 frames = SubResource( 13 )
-animation = "walk"
-frame = 3
+animation = "run"
+frame = 5
+playing = true
+
+[node name="PyroBot" type="KinematicBody2D" parent="."]
+script = ExtResource( 10 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PyroBot"]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="PyroBot"]
+position = Vector2( 36.2243, -2.71196 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 26 )
+animation = "run"
+frame = 2
+playing = true
+
+[node name="RocketBot" type="KinematicBody2D" parent="."]
+script = ExtResource( 11 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RocketBot"]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="RocketBot"]
+position = Vector2( 71.1511, -5.26614 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 39 )
+animation = "run"
+frame = 6
+playing = true
+
+[node name="ConstrBot" type="KinematicBody2D" parent="."]
+script = ExtResource( 12 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ConstrBot"]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="ConstrBot"]
+position = Vector2( 109.059, -7.74845 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 52 )
+animation = "run"
+frame = 2
 playing = true
