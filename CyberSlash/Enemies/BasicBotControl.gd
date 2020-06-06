@@ -17,6 +17,10 @@ var attack_timer = Timer.new()
 var player
 export var state = "friendly" # attack, chase, idle
 var walking_state = "run" # run or idle
+export var health = 3 # 2 hits to kill
+
+func hurt_bot(): # call this function on collision
+	health -= 1
 
 func set_player_instance(player_instance):
 	player = player_instance

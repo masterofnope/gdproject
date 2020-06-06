@@ -13,45 +13,45 @@ extents = Vector2( 14.4771, 1.09103 )
 
 [sub_resource type="AudioStreamSample" id=2]
 
-[sub_resource type="AtlasTexture" id=4]
+[sub_resource type="AtlasTexture" id=3]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=5]
+[sub_resource type="AtlasTexture" id=4]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 128, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=6]
+[sub_resource type="AtlasTexture" id=5]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 384, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=7]
+[sub_resource type="AtlasTexture" id=6]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 512, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=8]
+[sub_resource type="AtlasTexture" id=7]
 flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 640, 128, 128, 128 )
 
-[sub_resource type="SpriteFrames" id=9]
+[sub_resource type="SpriteFrames" id=8]
 animations = [ {
-"frames": [ SubResource( 4 ), SubResource( 5 ) ],
+"frames": [ SubResource( 3 ), SubResource( 4 ) ],
 "loop": true,
 "name": "idle",
 "speed": 2.0
 }, {
-"frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 7 ) ],
+"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 6 ) ],
 "loop": true,
 "name": "run",
 "speed": 9.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 13.2269, 18.6932 )
 
 [node name="Game" type="Node"]
@@ -108,7 +108,7 @@ zoom = Vector2( 0.8, 0.8 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="DemoRoom/Player"]
 position = Vector2( 1, -7.67917 )
-frames = SubResource( 9 )
+frames = SubResource( 8 )
 animation = "idle"
 playing = true
 
@@ -116,12 +116,12 @@ playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DemoRoom/Player"]
 position = Vector2( 0, -0.81395 )
-shape = SubResource( 3 )
+shape = SubResource( 9 )
 
 [node name="PlayerArea" type="Area2D" parent="DemoRoom/Player"]
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="DemoRoom/Player/PlayerArea"]
 position = Vector2( 0, -0.81395 )
-shape = SubResource( 3 )
+shape = SubResource( 9 )
 
 [node name="InterfaceLayer" type="CanvasLayer" parent="."]
