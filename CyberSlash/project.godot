@@ -95,6 +95,13 @@ toggle_pause={
 "events": [  ]
 }
 
+[layer_names]
+
+2d_render/layer_1="player"
+2d_render/layer_4="enemies"
+2d_render/layer_5="ammo"
+2d_render/player=false
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"

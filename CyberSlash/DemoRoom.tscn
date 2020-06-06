@@ -5,14 +5,13 @@
 [ext_resource path="res://src/Actors/Sword.gd" type="Script" id=3]
 [ext_resource path="res://WarpedCity.tres" type="TileSet" id=4]
 [ext_resource path="res://src/Game.gd" type="Script" id=5]
-[ext_resource path="res://EnemySpawner.gd" type="Script" id=6]
-[ext_resource path="res://src/Objects/Whetstone.tscn" type="PackedScene" id=7]
-[ext_resource path="res://src/Objects/Multi_jump.tscn" type="PackedScene" id=8]
+[ext_resource path="res://DemoRoom.gd" type="Script" id=6]
+[ext_resource path="res://Art/level_design/basic_spawner.png" type="Texture" id=7]
 
-[sub_resource type="AudioStreamSample" id=1]
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 14.4771, 1.09103 )
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 13.2269, 18.6932 )
+[sub_resource type="AudioStreamSample" id=2]
 
 [sub_resource type="AtlasTexture" id=4]
 flags = 4
@@ -39,7 +38,7 @@ flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 640, 128, 128, 128 )
 
-[sub_resource type="SpriteFrames" id=3]
+[sub_resource type="SpriteFrames" id=9]
 animations = [ {
 "frames": [ SubResource( 4 ), SubResource( 5 ) ],
 "loop": true,
@@ -52,6 +51,9 @@ animations = [ {
 "speed": 9.0
 } ]
 
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 13.2269, 18.6932 )
+
 [node name="Game" type="Node"]
 pause_mode = 2
 script = ExtResource( 5 )
@@ -60,16 +62,25 @@ script = ExtResource( 5 )
 position = Vector2( -0.58728, 1.78925 )
 script = ExtResource( 6 )
 
+[node name="BasicBotSpawner" type="Sprite" parent="DemoRoom"]
+position = Vector2( 332.81, 39.1062 )
+texture = ExtResource( 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DemoRoom/BasicBotSpawner"]
+shape = SubResource( 1 )
+
 [node name="TileMap" type="TileMap" parent="DemoRoom"]
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 4, 4 )
 cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
 cell_half_offset = 0
+collision_layer = 2
+collision_mask = 0
 format = 1
 tile_data = PoolIntArray( 720889, 8, 0, 655361, 8, 0, 655369, 8, 0, 655377, 8, 0, 655385, 8, 0, 655393, 8, 0, 655401, 8, 0, 655409, 8, 0, 655417, 8, 0, 655425, 8, 0, 655433, 8, 0, 655441, 8, 0, 655449, 8, 0, 655457, 8, 0 )
 
 [node name="Player" type="KinematicBody2D" parent="DemoRoom"]
-collision_mask = 30
+collision_mask = 22
 script = ExtResource( 2 )
 speed = Vector2( 250, 1000 )
 
@@ -79,7 +90,6 @@ wait_time = 0.5
 one_shot = true
 
 [node name="PlatformDetector" type="RayCast2D" parent="DemoRoom/Player"]
-cast_to = Vector2( 0, 50 )
 
 [node name="Sprite" type="Sprite" parent="DemoRoom/Player"]
 
@@ -87,13 +97,9 @@ cast_to = Vector2( 0, 50 )
 script = ExtResource( 3 )
 
 [node name="Slash" type="AudioStreamPlayer2D" parent="DemoRoom/Player/Sprite/Sword"]
-stream = SubResource( 1 )
+stream = SubResource( 2 )
 
 [node name="Cooldown" type="Timer" parent="DemoRoom/Player/Sprite/Sword"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DemoRoom/Player"]
-position = Vector2( 0, -0.81395 )
-shape = SubResource( 2 )
 
 [node name="Camera" type="Camera2D" parent="DemoRoom/Player"]
 position = Vector2( 0, -35 )
@@ -102,29 +108,20 @@ zoom = Vector2( 0.8, 0.8 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="DemoRoom/Player"]
 position = Vector2( 1, -7.67917 )
-frames = SubResource( 3 )
+frames = SubResource( 9 )
 animation = "idle"
-frame = 1
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="DemoRoom/Player"]
 
-[node name="Whetstone" parent="DemoRoom" instance=ExtResource( 7 )]
-position = Vector2( 360.155, 0.958679 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DemoRoom/Player"]
+position = Vector2( 0, -0.81395 )
+shape = SubResource( 3 )
+
+[node name="PlayerArea" type="Area2D" parent="DemoRoom/Player"]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="DemoRoom/Player/PlayerArea"]
+position = Vector2( 0, -0.81395 )
+shape = SubResource( 3 )
 
 [node name="InterfaceLayer" type="CanvasLayer" parent="."]
-
-[node name="Whetstone" parent="." instance=ExtResource( 7 )]
-position = Vector2( 297.413, 2.78925 )
-
-[node name="Multi_jump" parent="." instance=ExtResource( 8 )]
-position = Vector2( 1142.71, 24.533 )
-
-[node name="Whetstone2" parent="." instance=ExtResource( 7 )]
-position = Vector2( 230.547, 3.63947 )
-
-[node name="Whetstone3" parent="." instance=ExtResource( 7 )]
-position = Vector2( 164.677, 3.63947 )
-
-[node name="Multi_jump2" parent="." instance=ExtResource( 8 )]
-position = Vector2( 1061.09, 20.8231 )
