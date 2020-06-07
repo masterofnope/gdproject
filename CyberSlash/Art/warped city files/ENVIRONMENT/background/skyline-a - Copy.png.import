@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/skyline-a.png-f4958d8eb8d405f03ec1720b90abb0c8.stex"
+path="res://.import/skyline-a - Copy.png-53cf12edb323c717144e7fcd18901d92.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/warped city files/ENVIRONMENT/background/skyline-a.png"
-dest_files=[ "res://.import/skyline-a.png-f4958d8eb8d405f03ec1720b90abb0c8.stex" ]
+source_file="res://Art/warped city files/ENVIRONMENT/background/skyline-a - Copy.png"
+dest_files=[ "res://.import/skyline-a - Copy.png-53cf12edb323c717144e7fcd18901d92.stex" ]
 
 [params]
 
@@ -19,9 +19,9 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
+flags/repeat=0
 flags/filter=true
-flags/mipmaps=true
+flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
 process/fix_alpha_border=true

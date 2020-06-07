@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://WarpedCity.tres" type="TileSet" id=1]
+[ext_resource path="res://src/Objects/Multi_jump.tscn" type="PackedScene" id=2]
+
+[node name="TileMap" type="TileMap"]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 13, 16 )
+cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
+cell_half_offset = 0
+format = 1
+tile_data = PoolIntArray( -1048576, 1, 0, -1048573, 1, 0, -1048570, 1, 0, -1048567, 1, 0, -1048564, 1, 0, -1048561, 1, 0, -1048558, 1, 0, -1048555, 1, 0, -1048552, 1, 0, 0, 8, 0, 1, 8, 0, 2, 8, 0, 3, 8, 0, 4, 8, 0, 5, 8, 0, 6, 8, 0, 7, 8, 0, 8, 8, 0, 9, 8, 0, 10, 8, 0, 11, 8, 0, 12, 8, 0, 13, 8, 0, 14, 8, 0, 15, 8, 0, 16, 8, 0, 17, 8, 0, 18, 8, 0, 19, 8, 0, 20, 8, 0, 21, 8, 0, 22, 8, 0, 23, 8, 0, 24, 8, 0, 25, 8, 0, 26, 8, 0, 27, 17, 0 )
+
+[node name="Multi_jump" parent="." instance=ExtResource( 2 )]
+position = Vector2( 307.426, -31.4384 )
