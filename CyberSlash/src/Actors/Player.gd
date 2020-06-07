@@ -127,7 +127,7 @@ func _set_health(value):
 			emit_signal("Killed")
 			
 func kill ():
-	pass
+	pass #kill_me
 
 
 func _on_InvulnerabilityTimer_timeout():
