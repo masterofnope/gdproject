@@ -1,75 +1,125 @@
+# Basic Bot Controller
+# Jordyn Marlow
+
 extends KinematicBody2D
 
-var vert_pos_thresh = 5 # vertical threshold for enemy being in range of player
-var hori_pos_thresh = 100 # horizontal threshold for enemy being in range of player
-var ambush_dist = 50 # distance enemy stops from player during ambush
+const vert_pos_thresh = 10 # vertical threshold for enemy being in range of player
+const hori_pos_thresh = 100 # horizontal threshold for enemy being in range of player
+const ambush_dist = 50 # distance enemy stops from player during ambush
 var min_shoot_time = 1 # minimum seconds between lasers shot
 var max_shoot_time = 3 # maximum seconds between lasers shot
-var min_speed = 0 # minimum speed enemy can travel
-var max_speed = 4000 # maximum speed enemy can travel
-var min_x = 175
-var max_x = 897
+var max_speed = 2000 # speed enemies walk at
+var min_x = -28
+var max_x = 419
 
-onready var enemies_scene = load("Enemies.tscn")
-onready var enemy = enemies_scene.instance()
-onready var constr = enemy.get_node("ConstrBot")
-onready var main_scene = load("DemoRoom.tscn")
-onready var main = main_scene.instance()
-onready var player = main.get_node("Player")
-onready var direction = true
-onready var move = true
+onready var turret_scene = load("res://Enemies/Turret.tscn")
+onready var direction = 1 # 1 for right, -1 for left
 var velocity = Vector2()
 var rand = RandomNumberGenerator.new()
+var attack_timer = Timer.new()
+var player
+export var state = "friendly" # attack, chase, idle
+var walking_state = "run" # run or idle
+export var health = 3 # 2 hits to kill
 
-func switch_dir():
-	direction = not direction
-	$AnimatedSprite.set_flip_h(not direction)
+func hurt_bot(): # call this function on collision
+	health -= 1
 
-func move_bot(speed):
-	if move:
-		if direction:
-			velocity.x += rand.randi_range(min_speed, max_speed)
-		else:
-			velocity.x -= rand.randi_range(min_speed, max_speed)
-	
+func set_player_instance(player_instance):
+	player = player_instance
+
+func in_range():
+	if abs(player.position.y - position.y) <= vert_pos_thresh and abs(player.position.x - position.x) <= hori_pos_thresh:
+		return true
+	return false
+
 func attack():
 	# shoot laser periodicially
-	pass
-	
-func _process(delta):
-	# if enemy is in range of player, attack
-	#if abs(player.position.y - position.y) <= vert_pos_thresh and abs(player.position.x - position.x) <= hori_pos_thresh:
-		#if abs(player.position.x - position.x) > ambush_dist: # should enemy back up if player gets closer?
-			# move
-			#pass
-		# attack player
-		#pass
-	#else: #otherwise, move freely
+	var turret = turret_scene.instance()
+	turret.position.x = 0
+	turret.position.y = position.y - (turret.get_node("CollisionShape2D").shape.extents.y / 2)
+	$Shooter.add_child(turret)
+	attack_timer.set_wait_time(3)
+	attack_timer.start()
+
+func play_anim():
+	$AnimatedSprite.stop()
+	$AnimatedSprite.play(walking_state)
+
+func start_walk():
+	walking_state = "run"
+	play_anim()
+	walk()
+
+func walk():
+	velocity.x += (direction * max_speed)
+
+func start_idle():
+	walking_state = "idle"
+	play_anim()
+	idle()
+
+func idle():
+	velocity.x = 0
+
+func switch_direction():
+	direction *= -1
+	$AnimatedSprite.set_flip_h(direction < 0)
+
+func face_player():
+	if player.position.x < position.x and direction > 0:
+		switch_direction()
+	if player.position.x > position.x and direction < 0:
+		switch_direction()
+
+func _ready():
+	start_walk()
+	attack_timer.set_one_shot(true)
+	self.add_child(attack_timer)
+	attack_timer.set_wait_time(1)
+	attack_timer.connect("timeout", self, "attack")
+
+func _process(_delta):
 	rand.randomize()
-	var temp = rand.randi_range(0, 250)
-	if temp == 0:
-		switch_dir()
-	temp = rand.randi_range(0, 750)
-	if temp == 0:
-		move = not move
-		if move:
-			# stop idle, play walk
-			$AnimatedSprite.stop()
-			$AnimatedSprite.play("walk")
+	if state == "attack":
+		# stop moving
+		face_player()
+		idle()
+		# if player is not within range, state == chase
+		if not in_range():
+			state = "chase"
+			start_walk()
+	elif state == "chase":
+		# move toward player
+		walk()
+		# if player is within range, state == attack
+		if in_range():
+			state = "attack"
+			start_idle()
+	else: # friendly
+		# move freely on platform
+		if position.x <= min_x or position.x >= max_x:
+			switch_direction()
+			start_walk()
+		elif rand.randi_range(0, 500) == 0:
+			switch_direction()
+		if rand.randi_range(0, 1000) == 0:
+			if walking_state == "run":
+				start_idle()
+			else: # idle
+				start_walk()
 		else:
-			# stop walk, play idle
-			$AnimatedSprite.stop()
-			$AnimatedSprite.play("idle")
-	move_bot(rand.randf_range(100, 5000))
+			if walking_state == "run":
+				walk()
+			else: # idle
+				idle()
+		# if player is within range, state == attack
+		if in_range():
+			state = "attack"
+			face_player()
+			start_idle()
+			attack_timer.start()
 
 func _physics_process(delta):
 	velocity = move_and_slide(velocity * delta)
-
-
-
-
-
-
-
-
 

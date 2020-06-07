@@ -1,7 +1,10 @@
-# Basic Bot Controller
+# Pyro Bot Controller
 # Jordyn Marlow
 
 extends KinematicBody2D
+
+signal health_updated(health)
+signal killed()
 
 const vert_pos_thresh = 10 # vertical threshold for enemy being in range of player
 const hori_pos_thresh = 100 # horizontal threshold for enemy being in range of player
@@ -20,10 +23,32 @@ var attack_timer = Timer.new()
 var player
 export var state = "friendly" # attack, chase, idle
 var walking_state = "run" # run or idle
-export var health = 3 # 2 hits to kill
+export (float) var max_health = 100
+onready var health = max_health setget _set_health
 
-func hurt_bot(): # call this function on collision
-	health -= 1
+func damage(amount):
+	_set_health(health - amount)
+	set_modulate(Color(255, 145, 145))
+	$DamagedTimer.start()
+
+func clear_modulate():
+	set_modulate(Color(255, 255, 255))
+
+func kill():
+	set_modulate(Color(255, 145, 145))
+	$DespawnTimer.start()
+
+func despawn():
+	queue_free()
+
+func _set_health(value):
+	var prev_health = health
+	health = clamp(value, 0, max_health)
+	if health != prev_health:
+		emit_signal("health_updated", health)
+		if health == 0:
+			kill()
+			emit_signal("killed")
 
 func set_player_instance(player_instance):
 	player = player_instance
@@ -79,6 +104,8 @@ func _ready():
 	self.add_child(attack_timer)
 	attack_timer.set_wait_time(1)
 	attack_timer.connect("timeout", self, "attack")
+	$DamagedTimer.connect("timeout", self, "clear_modulate")
+	$DespawnTimer.connect("timeout", self, "despawn")
 
 func _process(_delta):
 	rand.randomize()

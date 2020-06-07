@@ -62,11 +62,11 @@ script = ExtResource( 5 )
 position = Vector2( -0.58728, 1.78925 )
 script = ExtResource( 6 )
 
-[node name="RocketBotSpawner" type="Sprite" parent="DemoRoom"]
+[node name="BasicBotSpawner" type="Sprite" parent="DemoRoom"]
 position = Vector2( 332.81, 39.1062 )
 texture = ExtResource( 7 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DemoRoom/RocketBotSpawner"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DemoRoom/BasicBotSpawner"]
 shape = SubResource( 1 )
 
 [node name="TileMap" type="TileMap" parent="DemoRoom"]
@@ -110,7 +110,6 @@ zoom = Vector2( 0.8, 0.8 )
 position = Vector2( 1, -7.67917 )
 frames = SubResource( 8 )
 animation = "idle"
-frame = 1
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="DemoRoom/Player"]
