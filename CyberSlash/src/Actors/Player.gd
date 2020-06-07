@@ -5,17 +5,24 @@ const FLOOR_DETECT_DISTANCE = 15.0
 
 export(String) var action_prefix = ""
 
+signal health_updated(health)
+signal killed()
+
+export (float) var max_health = 5
 
 onready var platform_detector = $PlatformDetector
 onready var sprite = $Sprite
 onready var animation_player = $AnimationPlayer
 onready var slash_timer = $SlashAnimation
 onready var sword = $Sprite/Sword
-
+onready var effects_animation = $Body/damageAnimationPlayer
+onready var current_health = max_health setget _set_health
 
 onready var multijumps = 0
 onready var maxmultijumps = 0
 
+var format_string = "HP: %s / %s"
+var actual_string = format_string % [current_health, max_health]
 
 func _ready():
 	var camera: Camera2D = $Camera
@@ -59,7 +66,7 @@ func _physics_process(_delta):
 	if animation != animation_player.current_animation and slash_timer.is_stopped():
 		if is_hor_slashing:
 			slash_timer.start()
-		animation_player.play(animation)
+		#animation_player.play(animation)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
@@ -97,8 +104,31 @@ func get_new_animation(is_shooting = false):
 	var animation_new = ""
 	if is_on_floor():
 		animation_new = "run" if abs(_velocity.x) > 0.1 else "idle"
-	else:
-		animation_new = "falling" if _velocity.y > 0 else "jumping"
+	#else:
+	#	animation_new = "falling" if _velocity.y > 0 else "jumping"
 	if is_shooting:
 		animation_new += "_weapon"
 	return animation_new
+
+func damage(damage_amount): 
+	if invul_timer.is_stopped():
+		invul_timer.start()
+		_set_health(current_health - damage_amount)
+		effects_animation.play("damage")
+		effects_animation.queue("flash")
+
+func _set_health(value):
+	var prev = current_health
+	current_health = clamp(value, 0, max_health)
+	if current_health != prev:
+		emit_signal("health_updated", current_health)
+		if current_health == 0: 
+			kill()
+			emit_signal("Killed")
+			
+func kill ():
+	pass #kill_me
+
+
+func _on_InvulnerabilityTimer_timeout():
+	effects_animation.play("rest")
