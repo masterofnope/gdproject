@@ -1,3 +1,6 @@
+# Basic Bot Controller
+# Jordyn Marlow
+
 extends KinematicBody2D
 
 const vert_pos_thresh = 10 # vertical threshold for enemy being in range of player

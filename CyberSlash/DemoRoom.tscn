@@ -6,7 +6,7 @@
 [ext_resource path="res://WarpedCity.tres" type="TileSet" id=4]
 [ext_resource path="res://src/Game.gd" type="Script" id=5]
 [ext_resource path="res://DemoRoom.gd" type="Script" id=6]
-[ext_resource path="res://Art/level_design/basic_spawner.png" type="Texture" id=7]
+[ext_resource path="res://Art/level_design/rocket_spawner.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 14.4771, 1.09103 )
@@ -62,11 +62,11 @@ script = ExtResource( 5 )
 position = Vector2( -0.58728, 1.78925 )
 script = ExtResource( 6 )
 
-[node name="BasicBotSpawner" type="Sprite" parent="DemoRoom"]
+[node name="RocketBotSpawner" type="Sprite" parent="DemoRoom"]
 position = Vector2( 332.81, 39.1062 )
 texture = ExtResource( 7 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DemoRoom/BasicBotSpawner"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DemoRoom/RocketBotSpawner"]
 shape = SubResource( 1 )
 
 [node name="TileMap" type="TileMap" parent="DemoRoom"]
@@ -110,6 +110,7 @@ zoom = Vector2( 0.8, 0.8 )
 position = Vector2( 1, -7.67917 )
 frames = SubResource( 8 )
 animation = "idle"
+frame = 1
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="DemoRoom/Player"]

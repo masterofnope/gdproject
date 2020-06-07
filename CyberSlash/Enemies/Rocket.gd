@@ -10,7 +10,8 @@ func set_dir(new_dir):
 	dir = new_dir
 
 func _ready():
-	$LaserArea.connect("area_entered", self, "hit_player")
+	$RocketArea.connect("area_entered", self, "hit_player")
+	$basic_bot_laser.set_flip_h(dir < 0)
 
 func hit_player(object):
 	if object.name == "PlayerArea":
