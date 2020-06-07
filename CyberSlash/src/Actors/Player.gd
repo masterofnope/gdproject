@@ -11,11 +11,12 @@ signal killed()
 export (float) var max_health = 5
 
 onready var platform_detector = $PlatformDetector
-onready var sprite = $Sprite
-onready var animation_player = $AnimationPlayer
+onready var sprite = $Body/Sprite
+onready var animation_player = $Body/AnimationPlayer
 onready var slash_timer = $SlashAnimation
-onready var sword = $Sprite/Sword
-onready var effects_animation = $Body/damageAnimationPlayer
+onready var sword = $Body/Sprite/Sword
+onready var invul_timer = $InvulnerabilityTimer
+onready var effects_animation = $Body/DamageAnimationPlayer
 onready var current_health = max_health setget _set_health
 
 onready var multijumps = 0
