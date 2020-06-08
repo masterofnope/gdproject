@@ -14,7 +14,6 @@ onready var platform_detector = $PlatformDetector
 onready var sprite = $AnimatedSprite
 onready var animation_player = $Body/AnimationPlayer
 onready var slash_timer = $SlashAnimation
-onready var sword = $Body/Sprite/Sword
 onready var invul_timer = $InvulnerabilityTimer
 onready var effects_animation = $Body/DamageAnimationPlayer
 onready var current_health = max_health setget _set_health
@@ -34,8 +33,8 @@ func _ready():
 	var camera: Camera2D = $Camera
 	if action_prefix == "p_":
 		camera.custom_viewport = $"../.."
+	attack_cooldown.connect("timeout",self,"_on_attack_cooldown_end")
 
-		
 func reset_jumps(doordonot):
 	if doordonot:
 		multijumps = maxmultijumps
@@ -63,19 +62,17 @@ func _physics_process(_delta):
 	# bullets forward.
 	# There are many situations like these where you can reuse existing properties instead of
 	# creating new variables.
-	
 	if Input.is_action_just_pressed(action_prefix + "p_attack_horizontal") and is_hor_slashing == false:
 		is_hor_slashing = true
 		attack_cooldown.start()
-		attack_cooldown.connect("timeout",self,"_on_attack_cooldown_end") 
 		attack_anim.play("slash")
 		attack_sound.play()
 		
 
 
-	var animation = get_new_animation(is_hor_slashing)
-	if animation != animation_player.current_animation and slash_timer.is_stopped():
-		animation_player.play(animation)
+	#var animation = get_new_animation(is_hor_slashing)
+	#if animation != animation_player.current_animation and slash_timer.is_stopped():
+	#	animation_player.play(animation)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
@@ -123,7 +120,7 @@ func get_new_animation(is_shooting = false):
 		animation_new += "_weapon"
 	return animation_new
 
-func damage(damage_amount): 
+func damage(damage_amount):
 	if invul_timer.is_stopped():
 		invul_timer.start()
 		_set_health(current_health - damage_amount)
@@ -133,13 +130,15 @@ func damage(damage_amount):
 func _set_health(value):
 	var prev = current_health
 	current_health = clamp(value, 0, max_health)
+	print(current_health)
 	if current_health != prev:
 		emit_signal("health_updated", current_health)
 		if current_health == 0: 
 			kill()
-			emit_signal("Killed")
+			emit_signal("killed")
 			
 func kill ():
+	print("player killed")
 	pass #kill_me
 
 

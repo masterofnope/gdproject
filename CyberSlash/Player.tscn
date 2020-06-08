@@ -89,10 +89,10 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=4]
 resource_name = "slash"
 tracks/0/type = "value"
-tracks/0/path = NodePath("../AnimatedSprite/Area2D/AttackHitbox:disabled")
+tracks/0/path = NodePath("../Area2D/AttackHitbox:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -104,52 +104,52 @@ tracks/0/keys = {
 "values": [ true, false, true ]
 }
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 13.2269, 18.6932 )
 
-[sub_resource type="AtlasTexture" id=5]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 0, 0, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=6]
-flags = 4
-atlas = ExtResource( 1 )
-region = Rect2( 128, 0, 128, 128 )
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 20.1926, 11.7872 )
 
 [sub_resource type="AtlasTexture" id=7]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 384, 128, 128, 128 )
+region = Rect2( 0, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=8]
 flags = 4
 atlas = ExtResource( 1 )
-region = Rect2( 512, 128, 128, 128 )
+region = Rect2( 128, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=9]
 flags = 4
 atlas = ExtResource( 1 )
+region = Rect2( 384, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 512, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 4
+atlas = ExtResource( 1 )
 region = Rect2( 640, 128, 128, 128 )
 
-[sub_resource type="SpriteFrames" id=10]
+[sub_resource type="SpriteFrames" id=12]
 animations = [ {
-"frames": [ SubResource( 5 ), SubResource( 6 ) ],
+"frames": [ SubResource( 7 ), SubResource( 8 ) ],
 "loop": true,
 "name": "idle",
 "speed": 2.0
 }, {
-"frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 8 ) ],
+"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 10 ) ],
 "loop": true,
 "name": "run",
 "speed": 9.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=12]
-extents = Vector2( 20.1926, 11.7872 )
-
 [node name="Player" type="KinematicBody2D"]
-collision_mask = 30
+collision_mask = 22
 script = ExtResource( 2 )
 speed = Vector2( 250, 1000 )
 
@@ -165,7 +165,7 @@ anims/flash = SubResource( 2 )
 anims/rest = SubResource( 3 )
 
 [node name="AttackPlayer" type="AnimationPlayer" parent="Body"]
-anims/slash = SubResource( 11 )
+anims/slash = SubResource( 4 )
 
 [node name="SlashAnimation" type="Timer" parent="."]
 process_mode = 0
@@ -175,31 +175,36 @@ one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -0.81395 )
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2( 0, -35 )
 current = true
 zoom = Vector2( 0.8, 0.8 )
 
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 26
+
+[node name="AttackHitbox" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 34.951, -1.80836 )
+shape = SubResource( 6 )
+disabled = true
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 1, -7.67917 )
-frames = SubResource( 10 )
+frames = SubResource( 12 )
 animation = "idle"
-frame = 1
 playing = true
-
-[node name="Area2D" type="Area2D" parent="AnimatedSprite"]
-position = Vector2( -1, 7.67917 )
-collision_layer = 16
-
-[node name="AttackHitbox" type="CollisionShape2D" parent="AnimatedSprite/Area2D"]
-position = Vector2( 34.951, -1.80836 )
-shape = SubResource( 12 )
-disabled = true
 
 [node name="InvulnerabilityTimer" type="Timer" parent="."]
 one_shot = true
 
 [node name="SlashSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 3 )
+
+[node name="PlayerArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerArea"]
+position = Vector2( 0, -0.81395 )
+shape = SubResource( 5 )

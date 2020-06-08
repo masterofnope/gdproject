@@ -23,19 +23,22 @@ var attack_timer = Timer.new()
 var player
 export var state = "friendly" # attack, chase, idle
 var walking_state = "run" # run or idle
-export (float) var max_health = 100
+export var max_health = 2
 onready var health = max_health setget _set_health
 
-func damage(amount):
-	_set_health(health - amount)
-	set_modulate(Color(255, 145, 145))
-	$DamagedTimer.start()
+func damage(object):
+	if object.name == "Area2D":
+		print("hit by player")
+		_set_health(health - 1)
+		# modulate is pink: 255, 145, 145
+		# after 1 second, set modulate back to white
+		#$DamagedTimer.start()
 
-func clear_modulate():
-	set_modulate(Color(255, 255, 255))
+#func clear_modulate():
+#	set_modulate(Color(255, 255, 255))
 
 func kill():
-	set_modulate(Color(255, 145, 145))
+	# modulate is pink: 255, 145, 145
 	$DespawnTimer.start()
 
 func despawn():
@@ -106,6 +109,7 @@ func _ready():
 	attack_timer.connect("timeout", self, "attack")
 	$DamagedTimer.connect("timeout", self, "clear_modulate")
 	$DespawnTimer.connect("timeout", self, "despawn")
+	$BotArea.connect("area_entered", self, "damage")
 
 func _process(_delta):
 	rand.randomize()
@@ -150,5 +154,4 @@ func _process(_delta):
 
 func _physics_process(delta):
 	velocity = move_and_slide(velocity * delta)
-
 

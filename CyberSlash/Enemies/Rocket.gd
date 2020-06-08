@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 const speed = 7500 # speed of laser
+const damage = 2 # hits to player health
 
 var velocity = Vector2()
 onready var player = load("DemoRoom.tscn").instance().get_node("DemoRoom").get_node("Player")
@@ -15,7 +16,9 @@ func _ready():
 
 func hit_player(object):
 	if object.name == "PlayerArea":
-		# hurt player
+		object.get_parent().damage(damage)
+		self.queue_free()
+	elif object.name == "Area2D":
 		self.queue_free()
 
 func _process(delta):

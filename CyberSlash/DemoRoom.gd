@@ -46,7 +46,7 @@ func _ready():
 func spawn_bot():
 	var bot = bot_type.instance()
 	bot.position.x = spawner.position.x
-	bot.position.y = spawner.position.y - (bot.get_node("CollisionShape2D").shape.extents.y / 2) - 5
+	bot.position.y = spawner.position.y - (bot.get_node("BotArea/CollisionShape2D").shape.extents.y / 2) - 5
 	bot.set_player_instance(get_node("Player"))
 	add_child(bot)
 	bots.append(bot)
