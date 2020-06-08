@@ -135,10 +135,10 @@ func _set_health(value):
 		emit_signal("health_updated", current_health)
 		if current_health == 0: 
 			kill()
-			emit_signal("killed")
 			
 func kill ():
 	print("player killed")
+	emit_signal("killed")
 	pass #kill_me
 
 
