@@ -140,6 +140,7 @@ func _set_health(value):
 			emit_signal("Killed")
 			
 func kill ():
+	emit_signal("killed")
 	pass #kill_me
 
 

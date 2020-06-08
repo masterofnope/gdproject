@@ -9,6 +9,7 @@ const LENGTH_CORRIDOR1=360
 const LENGTH_STAGE1=1716
 const LENGTH_STAGE2=1820
 const BACKGROUND_LENGTH=1884
+const DEATH_ZONE=510
 var loading_point=1000
 var load_location=1716
 var back_loading_point=1000
@@ -18,6 +19,7 @@ var fore_load_location=BACKGROUND_LENGTH*5
 var player
 var lastLevel="level1"
 var isCorridor=false
+var block_instance
 func _ready():
 	for child in get_children():
 		if child is Player:
@@ -36,6 +38,11 @@ func _process(delta):
 			var scene_instance = scene.instance()
 			scene_instance.set_name("scene")
 			scene_instance.move_local_x(load_location)
+			add_child(scene_instance)
+			var blocker = load("res://src/Levels/blocker.tscn")
+			block_instance = blocker.instance()
+			block_instance.set_name("blocker")
+			block_instance.move_local_x(load_location)
 			add_child(scene_instance)
 			loading_point=loading_point+LENGTH_CORRIDOR1
 			load_location=load_location+LENGTH_CORRIDOR1
@@ -76,3 +83,9 @@ func _process(delta):
 		back_load_location=back_load_location+BACKGROUND_LENGTH
 		fore_loading_point=fore_loading_point+BACKGROUND_LENGTH*5
 		fore_load_location=fore_load_location+BACKGROUND_LENGTH*5
+	if player.global_position.y>DEATH_ZONE:
+		player.kill()
+
+func _on_Player_killed():
+	get_tree().change_scene("res://main_menu.tscn")
+	pass # Replace with function body.

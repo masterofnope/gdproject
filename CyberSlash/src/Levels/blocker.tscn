@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://WarpedCity.tres" type="TileSet" id=1]
+
+[node name="TileMap3" type="TileMap"]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 13, 16 )
+format = 1
+tile_data = PoolIntArray( -2555773, 0, 0, -2359165, 0, 0, -2162557, 0, 0, -1965949, 0, 0, -1769341, 0, 0, -1572733, 0, 0, -1376125, 0, 0, -1179517, 0, 0, -982909, 0, 0, -786301, 0, 0, -589693, 0, 0, -393085, 0, 0, -196477, 0, 0 )
