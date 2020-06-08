@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ninja.png-bb5fab2ce9c6f8b0ec9d728493c8ccab.stex"
+path="res://.import/player_dodge.png-691ea763282a651a865921d9e84b43ce.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/player/ninja.png"
-dest_files=[ "res://.import/ninja.png-bb5fab2ce9c6f8b0ec9d728493c8ccab.stex" ]
+source_file="res://Art/player/player_dodge.png"
+dest_files=[ "res://.import/player_dodge.png-691ea763282a651a865921d9e84b43ce.stex" ]
 
 [params]
 
