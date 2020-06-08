@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player_move_attack.png-1e10fac1e4c80c613434a93a5c956170.stex"
+path="res://.import/Microchip_Upgrade_-_Robot_Green.png-35ef77b68c005319202b7b1ff384df29.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/player/player_move_attack.png"
-dest_files=[ "res://.import/player_move_attack.png-1e10fac1e4c80c613434a93a5c956170.stex" ]
+source_file="res://Art/items/Microchip_Upgrade_-_Robot_Green.png"
+dest_files=[ "res://.import/Microchip_Upgrade_-_Robot_Green.png-35ef77b68c005319202b7b1ff384df29.stex" ]
 
 [params]
 
