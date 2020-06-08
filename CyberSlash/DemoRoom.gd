@@ -4,7 +4,7 @@ extends Node2D
 const LIMIT_LEFT = -10000
 const LIMIT_TOP = -510
 const LIMIT_RIGHT = 10000000000000
-const LIMIT_BOTTOM = 300
+const LIMIT_BOTTOM = 10000
 const LENGTH_CORRIDOR1=360
 const LENGTH_STAGE1=1716
 const LENGTH_STAGE2=1820
@@ -12,9 +12,7 @@ const BACKGROUND_LENGTH=1884
 var loading_point=1000
 var load_location=1716
 var back_loading_point=1000
-var back_load_location=BACKGROUND_LENGTH*2
-var fore_loading_point=1000
-var fore_load_location=BACKGROUND_LENGTH*5
+var back_load_location=BACKGROUND_LENGTH/2
 var player
 var lastLevel="level1"
 var isCorridor=false
@@ -66,13 +64,10 @@ func _process(delta):
 		var scene_instance = scene.instance()
 		scene_instance.set_name("background")
 		scene_instance.transform=scene_instance.transform.translated(Vector2(back_load_location,0))
-		add_child(scene_instance)
 		var scene2 = load("res://src/Levels/Foreground.tscn")
-		var scene_instance2 = scene2.instance()
-		scene_instance2.set_name("foreground")
-		scene_instance2.transform=scene_instance2.transform.translated(Vector2(fore_load_location,0))
-		add_child(scene_instance2)
+		var scene_instance2 = scene.instance()
+		scene_instance2.set_name("background")
+		scene_instance2.transform=scene_instance2.transform.translated(Vector2(back_load_location,0))
+		add_child(scene_instance)
 		back_loading_point=back_loading_point+BACKGROUND_LENGTH
 		back_load_location=back_load_location+BACKGROUND_LENGTH
-		fore_loading_point=fore_loading_point+BACKGROUND_LENGTH*5
-		fore_load_location=fore_load_location+BACKGROUND_LENGTH*5
