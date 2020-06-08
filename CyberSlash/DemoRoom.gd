@@ -1,91 +1,56 @@
 extends Node2D
 
+# Enemy Spawning parameters
+const max_num_bots = 3 # number of basic bots to spawn
+const spawn_time = 5 # number of seconds between enemies spawning
+
+# Enemy Spawning global variables
+var num_bots = 0 # number of basic bots in scene
+var timer = Timer.new()
+var bot_type
+var spawner
+var bots = []
 
 const LIMIT_LEFT = -10000
-const LIMIT_TOP = -510
-const LIMIT_RIGHT = 10000000000000
-const LIMIT_BOTTOM = 300
-const LENGTH_CORRIDOR1=360
-const LENGTH_STAGE1=1716
-const LENGTH_STAGE2=1820
-const BACKGROUND_LENGTH=1884
-const DEATH_ZONE=510
-var loading_point=1000
-var load_location=1716
-var back_loading_point=1000
-var back_load_location=BACKGROUND_LENGTH*2
-var fore_loading_point=1000
-var fore_load_location=BACKGROUND_LENGTH*5
-var player
-var lastLevel="level1"
-var isCorridor=false
-var block_instance
+const LIMIT_TOP = -10000
+const LIMIT_RIGHT = 10000
+const LIMIT_BOTTOM = 10000
+
 func _ready():
 	for child in get_children():
 		if child is Player:
-			player=child
 			var camera = child.get_node("Camera")
 			camera.limit_left = LIMIT_LEFT
 			camera.limit_top = LIMIT_TOP
 			camera.limit_right = LIMIT_RIGHT
 			camera.limit_bottom = LIMIT_BOTTOM
-			
-			
-func _process(delta):
-	if player.global_position.x>loading_point:
-		if !isCorridor:
-			var scene = load("res://src/Levels/Corridor1.tscn")
-			var scene_instance = scene.instance()
-			scene_instance.set_name("scene")
-			scene_instance.move_local_x(load_location)
-			add_child(scene_instance)
-			var blocker = load("res://src/Levels/blocker.tscn")
-			block_instance = blocker.instance()
-			block_instance.set_name("blocker")
-			block_instance.move_local_x(load_location)
-			add_child(scene_instance)
-			loading_point=loading_point+LENGTH_CORRIDOR1
-			load_location=load_location+LENGTH_CORRIDOR1
-			isCorridor=true
-		elif lastLevel=="level1":
-			var scene = load("res://src/Levels/Level2.tscn")
-			var scene_instance = scene.instance()
-			scene_instance.set_name("scene")
-			scene_instance.move_local_x(load_location)
-			add_child(scene_instance)
-			loading_point=loading_point+LENGTH_STAGE2
-			load_location=load_location+LENGTH_STAGE2
-			isCorridor=false
-			lastLevel="level2"
-		else:
-			var scene = load("res://src/Levels/Level1.tscn")
-			var scene_instance = scene.instance()
-			scene_instance.set_name("scene")
-			scene_instance.move_local_x(load_location)
-			add_child(scene_instance)
-			loading_point=loading_point+LENGTH_STAGE1
-			load_location=load_location+LENGTH_STAGE1
-			isCorridor=false
-			lastLevel="level1"
-			
-	if player.global_position.x>back_loading_point:
-		var scene = load("res://src/Levels/Background.tscn")
-		var scene_instance = scene.instance()
-		scene_instance.set_name("background")
-		scene_instance.transform=scene_instance.transform.translated(Vector2(back_load_location,0))
-		add_child(scene_instance)
-		var scene2 = load("res://src/Levels/Foreground.tscn")
-		var scene_instance2 = scene2.instance()
-		scene_instance2.set_name("foreground")
-		scene_instance2.transform=scene_instance2.transform.translated(Vector2(fore_load_location,0))
-		add_child(scene_instance2)
-		back_loading_point=back_loading_point+BACKGROUND_LENGTH
-		back_load_location=back_load_location+BACKGROUND_LENGTH
-		fore_loading_point=fore_loading_point+BACKGROUND_LENGTH*5
-		fore_load_location=fore_load_location+BACKGROUND_LENGTH*5
-	if player.global_position.y>DEATH_ZONE:
-		player.kill()
+	# Enemy Spawning
+	timer.set_one_shot(true)
+	self.add_child(timer)
+	timer.set_wait_time(spawn_time)
+	if has_node("BasicBotSpawner"):
+		spawner = get_node("BasicBotSpawner")
+		bot_type = load("res://Enemies/BasicBot.tscn")
+	if has_node("PyroBotSpawner"):
+		spawner = get_node("PyroBotSpawner")
+		bot_type = load("res://Enemies/PyroBot.tscn")
+	elif has_node("RocketBotSpawner"):
+		spawner = get_node("RocketBotSpawner")
+		bot_type = load("res://Enemies/RocketBot.tscn")
+	elif has_node("ConstrBotSpawner"):
+		spawner = get_node("ConstrBotSpawner")
+		bot_type = load("res://Enemies/ConstrBot.tscn")
+	timer.connect("timeout", self, "spawn_bot")
+	timer.start()
 
-func _on_Player_killed():
-	get_tree().change_scene("res://main_menu.tscn")
-	pass # Replace with function body.
+func spawn_bot():
+	var bot = bot_type.instance()
+	bot.position.x = spawner.position.x
+	bot.position.y = spawner.position.y - (bot.get_node("BotArea/CollisionShape2D").shape.extents.y / 2) - 5
+	bot.set_player_instance(get_node("Player"))
+	add_child(bot)
+	bots.append(bot)
+	num_bots += 1
+	if num_bots < max_num_bots:
+		timer.set_wait_time(spawn_time)
+		timer.start()
