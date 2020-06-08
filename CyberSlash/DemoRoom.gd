@@ -31,7 +31,7 @@ func _ready():
 	if has_node("BasicBotSpawner"):
 		spawner = get_node("BasicBotSpawner")
 		bot_type = load("res://Enemies/BasicBot.tscn")
-	elif has_node("PyroBotSpawner"):
+	if has_node("PyroBotSpawner"):
 		spawner = get_node("PyroBotSpawner")
 		bot_type = load("res://Enemies/PyroBot.tscn")
 	elif has_node("RocketBotSpawner"):
@@ -46,7 +46,7 @@ func _ready():
 func spawn_bot():
 	var bot = bot_type.instance()
 	bot.position.x = spawner.position.x
-	bot.position.y = spawner.position.y - (bot.get_node("CollisionShape2D").shape.extents.y / 2)
+	bot.position.y = spawner.position.y - (bot.get_node("CollisionShape2D").shape.extents.y / 2) - 5
 	bot.set_player_instance(get_node("Player"))
 	add_child(bot)
 	bots.append(bot)

@@ -5,17 +5,30 @@ const FLOOR_DETECT_DISTANCE = 15.0
 
 export(String) var action_prefix = ""
 
+signal health_updated(health)
+signal killed()
+
+export (float) var max_health = 5
 
 onready var platform_detector = $PlatformDetector
-onready var sprite = $Sprite
-onready var animation_player = $AnimationPlayer
+onready var sprite = $AnimatedSprite
+onready var animation_player = $Body/AnimationPlayer
 onready var slash_timer = $SlashAnimation
-onready var sword = $Sprite/Sword
-
+onready var sword = $Body/Sprite/Sword
+onready var invul_timer = $InvulnerabilityTimer
+onready var effects_animation = $Body/DamageAnimationPlayer
+onready var current_health = max_health setget _set_health
+onready var attack_anim = $Body/AttackPlayer
+onready var attack_sound = $SlashSound
+onready var attack_cooldown = $SlashAnimation
+onready var attack_box = $Area2D/AttackHitbox
 
 onready var multijumps = 0
 onready var maxmultijumps = 0
+onready var is_hor_slashing = false
 
+var format_string = "HP: %s / %s"
+var actual_string = format_string % [current_health, max_health]
 
 func _ready():
 	var camera: Camera2D = $Camera
@@ -50,20 +63,26 @@ func _physics_process(_delta):
 	# bullets forward.
 	# There are many situations like these where you can reuse existing properties instead of
 	# creating new variables.
-	var is_hor_slashing = false
-	if Input.is_action_just_pressed(action_prefix + "attack_horizontal"):
-		is_hor_slashing = sword.horizontal_slash(sprite.scale.x)
+	
+	if Input.is_action_just_pressed(action_prefix + "p_attack_horizontal") and is_hor_slashing == false:
+		is_hor_slashing = true
+		attack_cooldown.start()
+		attack_cooldown.connect("timeout",self,"_on_attack_cooldown_end") 
+		attack_anim.play("slash")
+		attack_sound.play()
+		
 
 
 	var animation = get_new_animation(is_hor_slashing)
 	if animation != animation_player.current_animation and slash_timer.is_stopped():
-		if is_hor_slashing:
-			slash_timer.start()
-		#animation_player.play(animation)
+		animation_player.play(animation)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
+func _on_attack_cooldown_end():
+	is_hor_slashing = false
+	
 
 func calculate_move_velocity(
 		linear_velocity,
@@ -96,9 +115,33 @@ func get_direction():
 func get_new_animation(is_shooting = false):
 	var animation_new = ""
 	if is_on_floor():
-		animation_new = "run" if abs(_velocity.x) > 0.1 else "idle"
+		animation_new = "run" if _velocity.x != 0 else "idle"
 	#else:
 	#	animation_new = "falling" if _velocity.y > 0 else "jumping"
+	#if _velocity.x != 0:
 	if is_shooting:
 		animation_new += "_weapon"
 	return animation_new
+
+func damage(damage_amount): 
+	if invul_timer.is_stopped():
+		invul_timer.start()
+		_set_health(current_health - damage_amount)
+		effects_animation.play("damage")
+		effects_animation.queue("flash")
+
+func _set_health(value):
+	var prev = current_health
+	current_health = clamp(value, 0, max_health)
+	if current_health != prev:
+		emit_signal("health_updated", current_health)
+		if current_health == 0: 
+			kill()
+			emit_signal("Killed")
+			
+func kill ():
+	pass #kill_me
+
+
+func _on_InvulnerabilityTimer_timeout():
+	effects_animation.play("rest")
