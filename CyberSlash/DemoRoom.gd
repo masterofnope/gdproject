@@ -59,11 +59,15 @@ func _process(delta):
 			isCorridor=false
 			lastLevel="level1"
 			
-	#if player.global_position.x>back_loading_point:
-		#var scene = load("res://src/Levels/Background.tscn")
-		#var scene_instance = scene.instance()
-		#scene_instance.set_name("background")
-		#scene_instance.transform=scene_instance.transform.translated(Vector2(BACKGROUND_LENGTH,0))
-		#add_child(scene_instance)
-		#back_loading_point=back_loading_point+BACKGROUND_LENGTH
-		#back_load_location=back_load_location+BACKGROUND_LENGTH
+	if player.global_position.x>back_loading_point:
+		var scene = load("res://src/Levels/Background.tscn")
+		var scene_instance = scene.instance()
+		scene_instance.set_name("background")
+		scene_instance.transform=scene_instance.transform.translated(Vector2(back_load_location,0))
+		var scene2 = load("res://src/Levels/Foreground.tscn")
+		var scene_instance2 = scene.instance()
+		scene_instance2.set_name("background")
+		scene_instance2.transform=scene_instance2.transform.translated(Vector2(back_load_location,0))
+		add_child(scene_instance)
+		back_loading_point=back_loading_point+BACKGROUND_LENGTH
+		back_load_location=back_load_location+BACKGROUND_LENGTH
