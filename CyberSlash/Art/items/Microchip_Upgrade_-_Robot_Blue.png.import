@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player_idle.png-4abce3576f4706f4b6b9aa8e35db4fdc.stex"
+path="res://.import/Microchip_Upgrade_-_Robot_Blue.png-e8d96563d15e24ed26d2a32256a05b96.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/player/player_idle.png"
-dest_files=[ "res://.import/player_idle.png-4abce3576f4706f4b6b9aa8e35db4fdc.stex" ]
+source_file="res://Art/items/Microchip_Upgrade_-_Robot_Blue.png"
+dest_files=[ "res://.import/Microchip_Upgrade_-_Robot_Blue.png-e8d96563d15e24ed26d2a32256a05b96.stex" ]
 
 [params]
 
