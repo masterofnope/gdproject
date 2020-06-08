@@ -107,6 +107,6 @@ func _on_Player_killed():
 func _on_BasicBot_killed():
 	print("The Main Scene Detected that a bot was killed")
 	deadBots+=1
-	if deadBots==max_num_bots*2:
+	if deadBots==max_num_bots:
 		remove_child(block_instance)
 		deadBots=0
