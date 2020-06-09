@@ -90,7 +90,7 @@ position = Vector2( 0.19371, 0 )
 scale = Vector2( 1.5, 1.5 )
 frames = SubResource( 13 )
 animation = "run"
-frame = 7
+frame = 5
 playing = true
 
 [node name="Shooter" type="Node2D" parent="."]
@@ -105,3 +105,5 @@ shape = SubResource( 14 )
 [node name="DespawnTimer" type="Timer" parent="."]
 
 [node name="DamagedTimer" type="Timer" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
