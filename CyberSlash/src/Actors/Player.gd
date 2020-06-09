@@ -34,6 +34,7 @@ func _ready():
 	if action_prefix == "p_":
 		camera.custom_viewport = $"../.."
 	attack_cooldown.connect("timeout",self,"_on_attack_cooldown_end")
+	invul_timer.connect("timeout", self, "_on_InvulnerabilityTimer_timeout")
 
 func reset_jumps(doordonot):
 	if doordonot:
@@ -144,3 +145,4 @@ func kill ():
 
 func _on_InvulnerabilityTimer_timeout():
 	effects_animation.play("rest")
+	$Body.visible = true
