@@ -12,8 +12,8 @@ const ambush_dist = 50 # distance enemy stops from player during ambush
 var min_shoot_time = 1 # minimum seconds between lasers shot
 var max_shoot_time = 3 # maximum seconds between lasers shot
 var max_speed = 2000 # speed enemies walk at
-var min_x = -28
-var max_x = 419
+var min_x = 177
+var max_x = 1310
 
 onready var laser_scene = load("res://Enemies/Laser.tscn")
 onready var direction = 1 # 1 for right, -1 for left
