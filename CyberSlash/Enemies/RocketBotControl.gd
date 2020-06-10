@@ -61,7 +61,7 @@ func set_player_instance(player_instance):
 	player = player_instance
 
 func in_range():
-	if abs(player.position.y - global_position.y) <= vert_pos_thresh and abs(player.position.x - global_position.x) <= hori_pos_thresh:
+	if abs(player.position.y - global_position.y) <= vert_pos_thresh and abs(player.position.x - global_position.x) <= hori_pos_thresh or (position.x<-150&&(player.position.x - global_position.x)<0) or (position.x>150&&(player.position.x - global_position.x)>0):
 		return true
 	return false
 

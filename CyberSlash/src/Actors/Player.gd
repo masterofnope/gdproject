@@ -22,6 +22,7 @@ onready var attack_sound = $SlashSound
 onready var attack_cooldown = $SlashAnimation
 onready var attack_box = $Area2D/AttackHitbox
 
+onready var num_bots_killed=0
 onready var multijumps = 0
 onready var maxmultijumps = 0
 onready var is_hor_slashing = false
@@ -145,7 +146,11 @@ func kill ():
 	print("player killed")
 	emit_signal("killed")
 	pass #kill_me
-
+func _on_Bot_killed():
+	num_bots_killed=num_bots_killed+1
+	if(num_bots_killed==3):
+		_set_health(current_health+1)
+		num_bots_killed=0
 
 func _on_InvulnerabilityTimer_timeout():
 	effects_animation.play("rest")
