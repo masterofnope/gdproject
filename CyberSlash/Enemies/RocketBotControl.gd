@@ -62,7 +62,7 @@ func set_player_instance(player_instance):
 	player = player_instance
 
 func in_range():
-	if abs(player.position.y - position.y) <= vert_pos_thresh and abs(player.position.x - position.x) <= hori_pos_thresh:
+	if abs(player.position.y - global_position.y) <= vert_pos_thresh and abs(player.position.x - global_position.x) <= hori_pos_thresh:
 		return true
 	return false
 
@@ -101,9 +101,9 @@ func switch_direction():
 	$AnimatedSprite.set_flip_h(direction < 0)
 
 func face_player():
-	if player.position.x < position.x and direction > 0:
+	if player.position.x < global_position.x and direction > 0:
 		switch_direction()
-	if player.position.x > position.x and direction < 0:
+	if player.position.x > global_position.x and direction < 0:
 		switch_direction()
 
 func _ready():
@@ -137,7 +137,7 @@ func _process(_delta):
 			start_idle()
 	else: # friendly
 		# move freely on platform
-		if position.x <= min_x or position.x >= max_x:
+		if position.x <= min_x or global_position.x >= max_x:
 			switch_direction()
 			start_walk()
 		elif rand.randi_range(0, 500) == 0:
