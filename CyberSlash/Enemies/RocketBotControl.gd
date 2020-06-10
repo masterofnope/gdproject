@@ -26,7 +26,7 @@ var attack_timer = Timer.new()
 var player
 export var state = "friendly" # attack, chase, idle
 var walking_state = "run" # run or idle
-export var max_health = 3
+export var max_health = 2
 onready var health = max_health setget _set_health
 
 func set_platform_bounds(min_bound, max_bound):
@@ -113,7 +113,6 @@ func face_player():
 		switch_direction()
 
 func _ready():
-	health_bar._on_max_health_updated(3)
 	start_walk()
 	attack_timer.set_one_shot(true)
 	self.add_child(attack_timer)

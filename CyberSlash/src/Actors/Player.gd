@@ -9,7 +9,7 @@ signal health_updated(health)
 signal timeout()
 signal killed()
 
-export (float) var max_health = 5
+export (float) var max_health = 10
 
 onready var platform_detector = $PlatformDetector
 onready var sprite = $AnimatedSprite
