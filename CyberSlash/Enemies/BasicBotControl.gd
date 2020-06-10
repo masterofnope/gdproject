@@ -3,6 +3,8 @@
 
 extends KinematicBody2D
 
+export var out_of_bounds = false
+
 signal health_updated(health)
 signal killed()
 
@@ -106,6 +108,7 @@ func face_player():
 		switch_direction()
 
 func _ready():
+	print(str(min_x) + " " + str(max_x))
 	start_walk()
 	attack_timer.set_one_shot(true)
 	self.add_child(attack_timer)
@@ -134,7 +137,8 @@ func _process(_delta):
 			start_idle()
 	else: # friendly
 		# move freely on platform
-		if position.x <= min_x or position.x >= max_x:
+		if global_position.x <= min_x or global_position.x >= max_x:
+			out_of_bounds = true
 			switch_direction()
 			start_walk()
 		elif rand.randi_range(0, 500) == 0:
