@@ -8,9 +8,11 @@ const spawn_time = 5 # number of seconds between enemies spawning
 var num_bots = 0 # number of rocket bots in scene
 var timer = Timer.new()
 var bot_type = load("res://Enemies/RocketBot.tscn")
+onready var player = get_parent().get_parent().get_node("Player")
 var bots = []
 var min_x
 var max_x
+var activated = false
 
 func set_platform_bounds(min_bound, max_bound):
 	min_x = min_bound
@@ -22,7 +24,12 @@ func _ready():
 	self.add_child(timer)
 	timer.set_wait_time(spawn_time)
 	timer.connect("timeout", self, "spawn_bot")
-	timer.start()
+
+func _process(delta):
+	if abs(player.position.x - $RocketBotSpawner.global_position.x) < 500 and abs(player.position.y - $RocketBotSpawner.global_position.y) < 500 and not activated:
+		print("activate rocket spawner")
+		activated = true
+		timer.start()
 
 func spawn_bot():
 	var bot = bot_type.instance()
