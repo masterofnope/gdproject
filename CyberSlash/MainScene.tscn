@@ -12,21 +12,22 @@ pause_mode = 2
 script = ExtResource( 8 )
 
 [node name="MainRoom" type="Node2D" parent="."]
+pause_mode = 1
 position = Vector2( -0.58728, 1.78925 )
 script = ExtResource( 6 )
 
 [node name="BackForeGround2" parent="MainRoom" instance=ExtResource( 1 )]
+pause_mode = 1
 
 [node name="Player" parent="MainRoom" instance=ExtResource( 2 )]
+pause_mode = 1
 position = Vector2( 74, -65 )
 
 [node name="level1" parent="MainRoom" instance=ExtResource( 4 )]
+pause_mode = 1
 
 [node name="InterfaceLayer" type="CanvasLayer" parent="."]
 
 [node name="PauseMenu" parent="InterfaceLayer" instance=ExtResource( 3 )]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = 0.0
-margin_bottom = 0.0
+visible = false
 [connection signal="killed" from="MainRoom/Player" to="MainRoom" method="_on_Player_killed"]

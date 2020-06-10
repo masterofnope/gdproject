@@ -143,6 +143,7 @@ tracks/1/keys = {
 }
 
 [node name="BasicBot" type="KinematicBody2D"]
+pause_mode = 1
 collision_layer = 8
 collision_mask = 34
 script = ExtResource( 2 )
@@ -152,7 +153,7 @@ position = Vector2( 0.19371, 0 )
 scale = Vector2( 1.5, 1.5 )
 frames = SubResource( 13 )
 animation = "run"
-frame = 3
+frame = 1
 playing = true
 
 [node name="Shooter" type="Node2D" parent="."]

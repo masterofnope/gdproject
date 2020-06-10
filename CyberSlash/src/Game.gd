@@ -13,10 +13,10 @@ func _init():
 	OS.max_window_size = OS.get_screen_size()
 
 
-func _input(event):
-	if event.is_action_pressed("toggle_fullscreen"):
-		OS.window_fullscreen = not OS.window_fullscreen
-		get_tree().set_input_as_handled()
+#func _input(event):
+	#if event.is_action_pressed("toggle_fullscreen"):
+	#	OS.window_fullscreen = not OS.window_fullscreen
+	#	get_tree().set_input_as_handled()
 	# The GlobalControls node, in the Stage scene, is set to process even
 	# when the game is paused, so this code keeps running.
 	# To see that, select GlobalControls, and scroll down to the Pause category

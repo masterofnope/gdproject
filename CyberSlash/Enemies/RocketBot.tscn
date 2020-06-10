@@ -143,6 +143,7 @@ tracks/1/keys = {
 }
 
 [node name="RocketBot" type="KinematicBody2D"]
+pause_mode = 1
 collision_layer = 8
 collision_mask = 2
 script = ExtResource( 1 )
@@ -152,7 +153,7 @@ position = Vector2( 0.19371, 0 )
 scale = Vector2( 1.5, 1.5 )
 frames = SubResource( 13 )
 animation = "run"
-frame = 1
+frame = 4
 playing = true
 
 [node name="Shooter" type="Node2D" parent="."]

@@ -27,8 +27,6 @@ var player
 export var state = "friendly" # attack, chase, idle
 var walking_state = "run" # run or idle
 export (float) var max_health = 2
-
-
 onready var health = max_health setget _set_health
 
 func damage(object):
