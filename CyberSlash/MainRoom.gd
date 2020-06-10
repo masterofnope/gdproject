@@ -104,7 +104,15 @@ func load_corridor():
 func _on_Player_killed():
 	get_tree().change_scene("res://main_menu.tscn")
 	pass # Replace with function body.
+	
 func _on_BasicBot_killed():
+	print("The Main Scene Detected that a bot was killed")
+	deadBots+=1
+	if deadBots==max_num_bots*2:
+		remove_child(block_instance)
+		deadBots=0
+		
+func _on_RocketBot_killed():
 	print("The Main Scene Detected that a bot was killed")
 	deadBots+=1
 	if deadBots==max_num_bots*2:

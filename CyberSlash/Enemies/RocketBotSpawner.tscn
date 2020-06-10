@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Art/level_design/basic_spawner.png" type="Texture" id=1]
+[ext_resource path="res://Art/level_design/rocket_spawner.png" type="Texture" id=1]
 [ext_resource path="res://Enemies/BasicBotSpawner.gd" type="Script" id=2]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="BasicBotSpawner" type="Sprite" parent="."]
+[node name="RocketBotSpawner" type="Sprite" parent="."]
 texture = ExtResource( 1 )

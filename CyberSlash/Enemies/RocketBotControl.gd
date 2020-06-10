@@ -12,8 +12,8 @@ const ambush_dist = 50 # distance enemy stops from player during ambush
 var min_shoot_time = 1 # minimum seconds between lasers shot
 var max_shoot_time = 3 # maximum seconds between lasers shot
 var max_speed = 2000 # speed enemies walk at
-var min_x = -28
-var max_x = 419
+var min_x
+var max_x
 
 onready var rocket_scene = load("res://Enemies/Rocket.tscn")
 onready var direction = 1 # 1 for right, -1 for left
@@ -25,6 +25,10 @@ export var state = "friendly" # attack, chase, idle
 var walking_state = "run" # run or idle
 export var max_health = 2
 onready var health = max_health setget _set_health
+
+func set_platform_bounds(min_bound, max_bound):
+	min_x = min_bound
+	max_x = max_bound
 
 func damage(object):
 	if object.name == "Area2D":
