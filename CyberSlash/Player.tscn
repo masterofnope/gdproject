@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Art/player/ninja.png" type="Texture" id=1]
 [ext_resource path="res://src/Actors/Player.gd" type="Script" id=2]
 [ext_resource path="res://Art/sound/Item_84.wav" type="AudioStream" id=3]
+[ext_resource path="res://HealthBar.tscn" type="PackedScene" id=4]
 
 [sub_resource type="Animation" id=1]
 resource_name = "damage"
@@ -195,9 +196,11 @@ disabled = true
 position = Vector2( 1, -7.67917 )
 frames = SubResource( 12 )
 animation = "idle"
+frame = 1
 playing = true
 
 [node name="InvulnerabilityTimer" type="Timer" parent="."]
+wait_time = 0.8
 one_shot = true
 
 [node name="SlashSound" type="AudioStreamPlayer2D" parent="."]
@@ -208,3 +211,10 @@ stream = ExtResource( 3 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerArea"]
 position = Vector2( 0, -0.81395 )
 shape = SubResource( 5 )
+
+[node name="HealthBar" parent="." instance=ExtResource( 4 )]
+margin_left = -24.6249
+margin_top = -34.9614
+margin_right = 4.37508
+margin_bottom = -6.96136
+rect_scale = Vector2( 0.2, 0.1 )

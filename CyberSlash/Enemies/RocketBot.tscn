@@ -1,6 +1,7 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Enemies/RocketBotControl.gd" type="Script" id=1]
+[ext_resource path="res://BotHealthBar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Art/enemies/rocket/rocket_run.png" type="Texture" id=4]
 [ext_resource path="res://Art/enemies/rocket/rocket_idle.png" type="Texture" id=5]
 
@@ -80,6 +81,67 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=14]
 extents = Vector2( 10.5921, 20.923 )
 
+[sub_resource type="Animation" id=15]
+resource_name = "damage"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "invul"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "rest"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="RocketBot" type="KinematicBody2D"]
 collision_layer = 8
 collision_mask = 2
@@ -90,7 +152,7 @@ position = Vector2( 0.19371, 0 )
 scale = Vector2( 1.5, 1.5 )
 frames = SubResource( 13 )
 animation = "run"
-frame = 5
+frame = 1
 playing = true
 
 [node name="Shooter" type="Node2D" parent="."]
@@ -106,4 +168,15 @@ shape = SubResource( 14 )
 
 [node name="DamagedTimer" type="Timer" parent="."]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="DamageAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/damage = SubResource( 15 )
+anims/invul = SubResource( 16 )
+anims/rest = SubResource( 17 )
+
+[node name="BotHealthBar" parent="." instance=ExtResource( 2 )]
+margin_left = -19.0498
+margin_top = -29.2449
+margin_right = 20.9502
+margin_bottom = 10.7551
+rect_scale = Vector2( 0.15, 0.075 )
+[connection signal="timeout" from="DamagedTimer" to="." method="_on_DamagedTimer_timeout"]
