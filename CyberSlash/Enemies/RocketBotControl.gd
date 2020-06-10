@@ -6,6 +6,9 @@ extends KinematicBody2D
 signal health_updated(health)
 signal killed()
 
+onready var effects_animation = $DamageAnimationPlayer
+onready var health_bar = $BotHealthBar
+
 const vert_pos_thresh = 10 # vertical threshold for enemy being in range of player
 const hori_pos_thresh = 100 # horizontal threshold for enemy being in range of player
 const ambush_dist = 50 # distance enemy stops from player during ambush
@@ -34,6 +37,7 @@ func damage(object):
 	if object.name == "Area2D":
 		print("hit by player")
 		_set_health(health - 1)
+		effects_animation.play("damage")
 		# modulate is pink: 255, 145, 145
 		# after 1 second, set modulate back to white
 		#$DamagedTimer.start()
@@ -51,6 +55,9 @@ func despawn():
 func _set_health(value):
 	var prev_health = health
 	health = clamp(value, 0, max_health)
+	$BotHealthBar/HealthOver.value = health
+	$BotHealthBar/UpdateTween.interpolate_property($BotHealthBar/HealthUnder, "value", $BotHealthBar/HealthUnder.value, health, 0.4, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+	$BotHealthBar/UpdateTween.start()
 	if health != prev_health:
 		emit_signal("health_updated", health)
 		if health == 0:
@@ -114,6 +121,8 @@ func _ready():
 	$DamagedTimer.connect("timeout", self, "clear_modulate")
 	$DespawnTimer.connect("timeout", self, "despawn")
 	$BotArea.connect("area_entered", self, "damage")
+	$BotHealthBar/HealthOver.value = max_health
+	$BotHealthBar/HealthUnder.value = max_health
 
 func _process(_delta):
 	rand.randomize()
@@ -159,4 +168,5 @@ func _process(_delta):
 func _physics_process(delta):
 	velocity = move_and_slide(velocity * delta)
 
-
+func _on_DamagedTimer_timeout():
+	effects_animation.play("rest")
