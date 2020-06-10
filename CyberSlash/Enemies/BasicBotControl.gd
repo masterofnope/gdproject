@@ -137,7 +137,8 @@ func _process(_delta):
 			start_idle()
 	else: # friendly
 		# move freely on platform
-		if global_position.x <= min_x or global_position.x >= max_x:
+		if position.x <= -100 or position.x >= 100:
+			print("out of bounds")
 			out_of_bounds = true
 			switch_direction()
 			start_walk()

@@ -134,7 +134,7 @@ func _process(_delta):
 			start_idle()
 	else: # friendly
 		# move freely on platform
-		if global_position.x <= min_x or global_position.x >= max_x:
+		if position.x <= -100 or position.x >= 100:
 			switch_direction()
 			start_walk()
 		elif rand.randi_range(0, 500) == 0:

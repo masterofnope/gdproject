@@ -41,6 +41,6 @@ func spawn_bot():
 	add_child(bot)
 	bots.append(bot)
 	num_bots += 1
-	if num_bots < max_num_bots*2:
+	if num_bots < max_num_bots:
 		timer.set_wait_time(spawn_time)
 		timer.start()
