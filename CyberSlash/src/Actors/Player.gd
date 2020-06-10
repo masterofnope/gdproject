@@ -58,6 +58,7 @@ func _physics_process(_delta):
 	# This will make Robi face left or right depending on the direction you move.
 	if direction.x != 0:
 		sprite.scale.x = 1 if direction.x > 0 else -1
+		$Area2D.scale.x = 1 if direction.x > 0 else -1
 
 	# We use the sprite's scale to store Robi’s look direction which allows us to shoot
 	# bullets forward.
@@ -71,9 +72,10 @@ func _physics_process(_delta):
 		
 
 
-	#var animation = get_new_animation(is_hor_slashing)
-	#if animation != animation_player.current_animation and slash_timer.is_stopped():
-	#	animation_player.play(animation)
+	var animation = get_new_animation(is_hor_slashing)
+	if animation != animation_player.current_animation:
+		sprite.play(animation)
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
@@ -110,7 +112,7 @@ func get_direction():
 		yvel
 	)
 
-func get_new_animation(is_shooting = false):
+func get_new_animation(is_shooting):
 	var animation_new = ""
 	if is_on_floor():
 		animation_new = "run" if _velocity.x != 0 else "idle"
@@ -118,7 +120,9 @@ func get_new_animation(is_shooting = false):
 	#	animation_new = "falling" if _velocity.y > 0 else "jumping"
 	#if _velocity.x != 0:
 	if is_shooting:
-		animation_new += "_weapon"
+		animation_new = "attack"
+	if is_shooting and _velocity.x !=0:
+		animation_new = "attack_move"
 	return animation_new
 
 func damage(damage_amount):
