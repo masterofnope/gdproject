@@ -153,7 +153,7 @@ position = Vector2( 0.19371, 0 )
 scale = Vector2( 1.5, 1.5 )
 frames = SubResource( 13 )
 animation = "run"
-frame = 5
+frame = 6
 playing = true
 
 [node name="Shooter" type="Node2D" parent="."]
@@ -163,8 +163,8 @@ playing = true
 [node name="DespawnTimer" type="Timer" parent="."]
 
 [node name="BotArea" type="Area2D" parent="."]
-collision_layer = 24
-collision_mask = 32
+collision_layer = 8
+collision_mask = 34
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BotArea"]
 shape = SubResource( 14 )

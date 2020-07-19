@@ -1,35 +1,33 @@
-# Pyro Bot Controller
-# Jordyn Marlow
+# Basic Bot Controller
 
 extends KinematicBody2D
 
 export var out_of_bounds = false
+export (float) var max_health = 2
+export var state = "friendly" # attack, chase, idle
 
 signal health_updated(health)
 signal killed()
 
 onready var effects_animation = $DamageAnimationPlayer
-onready var health_bar = $BotHealthBar
-
-const vert_pos_thresh = 10 # vertical threshold for enemy being in range of player
-const hori_pos_thresh = 100 # horizontal threshold for enemy being in range of player
-const ambush_dist = 50 # distance enemy stops from player during ambush
-var min_shoot_time = 1 # minimum seconds between lasers shot
-var max_shoot_time = 3 # maximum seconds between lasers shot
-var max_speed = 2000 # speed enemies walk at
-var min_x
-var max_x
-
 onready var laser_scene = load("res://Enemies/Laser.tscn")
-onready var direction = 1 # 1 for right, -1 for left
-var velocity = Vector2()
+onready var direction = 1 # 1 for right, -1 for left; direction enemy is facing
+onready var health = max_health setget _set_health
+onready var target_pos = position # bot's current target position
+
+const VERT_POS_THRESH = 10 # vertical threshold for enemy being in range of player
+const HORI_POS_THRESH = 200 # horizontal threshold for enemy being in range of player
+const AMBUSH_DIST = 50 # distance enemy stops from player during ambush
+const MAX_SPEED = 2000 # speed enemies walk at
+const TIME_BETWEEN_LASERS = 3 # wait time in seconds between lasers shot
+
+var min_x # lower bound of platform as x value
+var max_x # upper bound of platform as x value
+var vel = Vector2(0, 0) # vel.y should always be 0-- gravity can be implemented when collision bug is fixed
 var rand = RandomNumberGenerator.new()
 var attack_timer = Timer.new()
 var player
-export var state = "friendly" # attack, chase, idle
 var walking_state = "run" # run or idle
-export (float) var max_health = 2
-onready var health = max_health setget _set_health
 
 func set_platform_bounds(min_bound, max_bound):
 	min_x = min_bound
@@ -37,15 +35,8 @@ func set_platform_bounds(min_bound, max_bound):
 
 func damage(object):
 	if object.name == "Area2D":
-		print("hit by player")
 		_set_health(health - 1)
 		effects_animation.play("damage")
-		# modulate is pink: 255, 145, 145
-		# after 1 second, set modulate back to white
-		#$DamagedTimer.start()
-
-#func clear_modulate():
-#	set_modulate(Color(255, 255, 255))
 
 func kill():
 	# modulate is pink: 255, 145, 145
@@ -70,9 +61,11 @@ func set_player_instance(player_instance):
 	player = player_instance
 
 func in_range():
-	if abs(player.position.y - global_position.y) <= vert_pos_thresh and abs(player.position.x - global_position.x) <= hori_pos_thresh or (position.x<-150&&direction<0) or (position.x>150&&direction>0):
-		return true
-	return false
+	return on_player_platform() and abs(player.position.x - global_position.x) <= HORI_POS_THRESH
+
+# this in range/ on same platform logic should be improved so enemies can fight the player from adjacent platforms
+func on_player_platform():
+	return abs(player.position.y - global_position.y) <= VERT_POS_THRESH
 
 func attack():
 	# shoot laser periodicially
@@ -81,8 +74,9 @@ func attack():
 	laser.position.x = (direction * 7) # 7px is the x offset of the art asset's barrel
 	laser.position.y = 0
 	$Shooter.add_child(laser)
-	attack_timer.set_wait_time(3)
-	attack_timer.start()
+	if state != "friendly":
+		attack_timer.set_wait_time(TIME_BETWEEN_LASERS)
+		attack_timer.start() 
 
 func play_anim():
 	$AnimatedSprite.stop()
@@ -94,7 +88,7 @@ func start_walk():
 	walk()
 
 func walk():
-	velocity.x += (direction * max_speed)
+	vel.x += (direction * MAX_SPEED)
 
 func start_idle():
 	walking_state = "idle"
@@ -102,20 +96,20 @@ func start_idle():
 	idle()
 
 func idle():
-	velocity.x = 0
+	vel.x = 0
 
-func switch_direction():
-	direction *= -1
-	$AnimatedSprite.set_flip_h(direction < 0)
+func set_direction(target):
+	if (target.x < global_position.x and direction > 0) or (target.x > global_position.x and direction < 0):
+		direction *= -1
+		$AnimatedSprite.set_flip_h(direction < 0)
 
-func face_player():
-	if player.position.x < global_position.x and direction > 0:
-		switch_direction()
-	if player.position.x > global_position.x and direction < 0:
-		switch_direction()
+func new_target_pos():
+	rand.randomize()
+	target_pos.x = rand.randi_range(min_x, max_x)
+	set_direction(target_pos)
 
 func _ready():
-	print(str(min_x) + " " + str(max_x))
+	print(vel)
 	start_walk()
 	attack_timer.set_one_shot(true)
 	self.add_child(attack_timer)
@@ -126,53 +120,55 @@ func _ready():
 	$BotArea.connect("area_entered", self, "damage")
 	$BotHealthBar/HealthOver.value = max_health
 	$BotHealthBar/HealthUnder.value = max_health
+	new_target_pos()
 
-
-func _process(_delta):
-	rand.randomize()
+func _process(delta):
 	if state == "attack":
-		# stop moving
-		face_player()
+		# stop walking, continue shooting
+		set_direction(player.position)
 		idle()
-		# if player is not within range, state == chase
-		if not in_range():
+		# if player gets out of ambush distance, state is chase
+		if abs(player.position.x - global_position.x) > AMBUSH_DIST:
 			state = "chase"
 			start_walk()
-	elif state == "chase":
-		# move toward player
-		walk()
-		# if player is within range, state == attack
-		if in_range():
-			state = "attack"
-			start_idle()
-	else: # friendly
-		# move freely on platform
-		if position.x <= -100 or position.x >= 100:
-			print("out of bounds")
-			out_of_bounds = true
-			switch_direction()
+		# if player is out of range, state is friendly
+		if not in_range():
+			state = "friendly"
+			attack_timer.stop()
+			new_target_pos()
+			set_direction(target_pos)
 			start_walk()
-		elif rand.randi_range(0, 500) == 0:
-			switch_direction()
-		if rand.randi_range(0, 1000) == 0:
-			if walking_state == "run":
-				start_idle()
-			else: # idle
-				start_walk()
-		else:
-			if walking_state == "run":
-				walk()
-			else: # idle
-				idle()
-		# if player is within range, state == attack
+	elif state == "chase":
+		# chase player
+		set_direction(player.position)
+		walk()
+		# if bot gets to edge of platform, go to idle state and continue attacking
+		# if player gets out of range, state is friendly
+		if abs(player.position.x - global_position.x) <= AMBUSH_DIST:
+			state = "attack"
+			start_idle()
+		if not in_range():
+			state = "friendly"
+			attack_timer.stop()
+			new_target_pos()
+			set_direction(target_pos)
+	else: # "friendly"
+		# wander freely around platform
+		#print(str(target_pos.x) + " == " + str(position.x))
+		if target_pos.x == int(global_position.x):
+			new_target_pos()
+		walk()
+		# if bot gets to edge of platform, switch direction and continue walking
+		# if player gets in range of bot, attack
 		if in_range():
 			state = "attack"
-			face_player()
+			set_direction(player.position)
+			attack()
 			start_idle()
-			attack_timer.start()
 
 func _physics_process(delta):
-	velocity = move_and_slide(velocity * delta)
+	vel = move_and_slide(vel * delta)
+	#position += vel + (acc / 2)
 
 func _on_DamagedTimer_timeout():
 	effects_animation.play("rest")
